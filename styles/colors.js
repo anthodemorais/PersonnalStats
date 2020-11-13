@@ -1,7 +1,7 @@
 export default {
-    bgColor: '#FFA611',
-    mainColor: 'F5820D',
-    secondaryColor: '#FFCB2B',
+    bgColor: '#f3a683',
+    mainColor: '#e15f41',
+    secondaryColor: '#303952',
     tertiaryColor: '#FFFFFF'
 }
 

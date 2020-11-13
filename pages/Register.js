@@ -47,13 +47,13 @@ export default function RegistrationScreen({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
+                {/* <Image
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
-                />
+                /> */}
                 <TextInput
-                    style={styles.input}
-                    placeholder='Full Name'
+                    style={styles.topInput}
+                    placeholder='Nom complet'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setFullName(text)}
                     value={fullName}
@@ -73,7 +73,7 @@ export default function RegistrationScreen({navigation}) {
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
-                    placeholder='Password'
+                    placeholder='Mot de passe'
                     onChangeText={(text) => setPassword(text)}
                     value={password}
                     underlineColorAndroid="transparent"
@@ -83,7 +83,7 @@ export default function RegistrationScreen({navigation}) {
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
-                    placeholder='Confirm Password'
+                    placeholder='Confirmer le mot de passe'
                     onChangeText={(text) => setConfirmPassword(text)}
                     value={confirmPassword}
                     underlineColorAndroid="transparent"
@@ -92,10 +92,10 @@ export default function RegistrationScreen({navigation}) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Create account</Text>
+                    <Text style={styles.buttonTitle}>Inscription</Text>
                 </TouchableOpacity>
                 <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+                    <Text style={styles.footerText}>Déjà inscrit ? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Connexion</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
@@ -117,6 +117,17 @@ const styles = StyleSheet.create({
         width: 90,
         alignSelf: "center",
         margin: 30
+    },
+    topInput: {
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: '20%',
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16
     },
     input: {
         height: 48,

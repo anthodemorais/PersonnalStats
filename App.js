@@ -1,11 +1,12 @@
-import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen } from './pages'
-import { ActivityIndicator } from 'react-native'
-import { firebase } from '../firebaseConfig';
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { firebase } from './firebaseConfig';
 import {decode, encode} from 'base-64'
+import colors from './styles/colors'
+import { color } from 'react-native-reanimated'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
@@ -16,42 +17,54 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
 
-  if (loading) {	
-    return (	
-      <ActivityIndicator></ActivityIndicator>
+  const usersRef = firebase.firestore().collection('users');
+  firebase.auth().onAuthStateChanged(u => {
+    if (u) {
+      usersRef.doc(u.uid).get()
+      .then((document) => {
+        const userData = document.data()
+        setLoading(false)
+        setUser(userData)
+      })
+      .catch((error) => {
+        setLoading(false)
+      });
+    } else {
+      setLoading(false)
+    }
+  });
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator></ActivityIndicator>
+      </View>
     )	
   }
 
-  useEffect(() => {
-    const usersRef = firebase.firestore().collection('users');
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        usersRef.doc(user.uid).get()
-        .then((document) => {
-          const userData = document.data()
-          setLoading(false)
-          setUser(userData)
-        })
-        .catch((error) => {
-          setLoading(false)
-        });
-      } else {
-        setLoading(false)
-      }
-    });
-  }, []);
-
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.bgColor,
+            shadowOpacity: 0,
+            elevation: 0
+          },
+          headerTintColor: colors.tertiaryColor,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
         { user ? (
-          <Stack.Screen name="Home">
-            {props => <HomeScreen {...props} extraData={user} />}
+          <Stack.Screen name="Home" options={{ title: " " }}>
+            {props => <HomeScreen name="Home" {...props} extraData={user} />}
           </Stack.Screen>
         ) : (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
+            <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
           </>
         )}
       </Stack.Navigator>
@@ -59,6 +72,15 @@ export default function App() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.bgColor,
+    height: '100%'
+  }
+})
 // main color = 224 118 45
 // secondary = white
 // bg = rgb(237, 163, 97)

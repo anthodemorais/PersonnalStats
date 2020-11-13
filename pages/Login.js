@@ -20,7 +20,7 @@ export default function LoginScreen({navigation}) {
             usersRef.doc(uid).get()
             .then(firestoreDocument => {
                 if (!firestoreDocument.exists) {
-                    alert("User does not exist anymore.")
+                    alert("Mauvais mot de passe ou email")
                     return;
                 }
                 const user = firestoreDocument.data()
@@ -45,7 +45,7 @@ export default function LoginScreen({navigation}) {
                     source={require('../../../assets/icon.png')}
                 /> */}
                 <TextInput
-                    style={styles.input}
+                    style={styles.topInput}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
@@ -57,7 +57,7 @@ export default function LoginScreen({navigation}) {
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
-                    placeholder='Password'
+                    placeholder='Mot de passe'
                     onChangeText={(text) => setPassword(text)}
                     value={password}
                     underlineColorAndroid="transparent"
@@ -66,10 +66,10 @@ export default function LoginScreen({navigation}) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Log in</Text>
+                    <Text style={styles.buttonTitle}>Connexion</Text>
                 </TouchableOpacity>
                 <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                    <Text style={styles.footerText}>Pas encore de compte ? <Text onPress={onFooterLinkPress} style={styles.footerLink}>S'inscrire</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
@@ -79,6 +79,8 @@ export default function LoginScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        display: "flex",
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.bgColor,
     },
@@ -91,6 +93,17 @@ const styles = StyleSheet.create({
         width: 90,
         alignSelf: "center",
         margin: 30
+    },
+    topInput: {
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: '30%',
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16
     },
     input: {
         height: 48,
