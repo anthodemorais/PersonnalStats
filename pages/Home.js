@@ -1,19 +1,26 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import colors from '../styles/colors'
+import components from '../styles/components'
 
 export default function HomeScreen(props) {
+
+    const onAddDataPress = () => {
+
+    }
+
+    // user = props.extraData
+
     return (
-        <View style={styles.container}>
-            <Text>Home Screen</Text>
+        <View style={components.container}>
+            <TouchableOpacity
+                style={components.button}
+                onPress={() => onAddDataPress()}>
+                <Text style={components.buttonTitle}>Ajouter des données</Text>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: colors.bgColor,
-    },
 })

@@ -3,7 +3,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../firebaseConfig';
 import { StyleSheet } from 'react-native';
-import colors from '../styles/colors';
+import components from '../styles/components';
 
 export default function RegistrationScreen({navigation}) {
     const [fullName, setFullName] = useState('')
@@ -43,7 +43,7 @@ export default function RegistrationScreen({navigation}) {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={components.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
@@ -61,7 +61,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
-                    style={styles.input}
+                    style={components.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
@@ -70,7 +70,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
-                    style={styles.input}
+                    style={components.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Mot de passe'
@@ -80,7 +80,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
-                    style={styles.input}
+                    style={components.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Confirmer le mot de passe'
@@ -90,12 +90,12 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
-                    style={styles.button}
+                    style={components.button}
                     onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Inscription</Text>
+                    <Text style={components.buttonTitle}>Inscription</Text>
                 </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Déjà inscrit ? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Connexion</Text></Text>
+                <View style={components.footerView}>
+                    <Text style={components.text}>Déjà inscrit ? <Text onPress={onFooterLinkPress} style={components.link}>Connexion</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
@@ -103,21 +103,6 @@ export default function RegistrationScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: colors.bgColor,
-    },
-    title: {
-
-    },
-    logo: {
-        flex: 1,
-        height: 120,
-        width: 90,
-        alignSelf: "center",
-        margin: 30
-    },
     topInput: {
         height: 48,
         borderRadius: 5,
@@ -129,45 +114,4 @@ const styles = StyleSheet.create({
         marginRight: 30,
         paddingLeft: 16
     },
-    input: {
-        height: 48,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingLeft: 16
-    },
-    button: {
-        backgroundColor: colors.mainColor,
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        height: 48,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold"
-    },
-    footerView: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 20
-    },
-    footerText: {
-        fontSize: 16,
-        // color: '#2e2e2d'
-        color: '#FFFFFF'
-    },
-    footerLink: {
-        color: colors.mainColor,
-        fontWeight: "bold",
-        fontSize: 16
-    }
 })

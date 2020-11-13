@@ -6,7 +6,6 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { firebase } from './firebaseConfig';
 import {decode, encode} from 'base-64'
 import colors from './styles/colors'
-import { color } from 'react-native-reanimated'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
@@ -58,7 +57,7 @@ export default function App() {
         }}
       >
         { user ? (
-          <Stack.Screen name="Home" options={{ title: " " }}>
+          <Stack.Screen name="Home" options={{ title: "" }}>
             {props => <HomeScreen name="Home" {...props} extraData={user} />}
           </Stack.Screen>
         ) : (

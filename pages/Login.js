@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../firebaseConfig';
-import colors from '../styles/colors';
+import components from '../styles/components'
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')
@@ -36,7 +36,7 @@ export default function LoginScreen({navigation}) {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={components.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
@@ -54,7 +54,7 @@ export default function LoginScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TextInput
-                    style={styles.input}
+                    style={components.input}
                     placeholderTextColor="#aaaaaa"
                     secureTextEntry
                     placeholder='Mot de passe'
@@ -64,12 +64,12 @@ export default function LoginScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
-                    style={styles.button}
+                    style={components.button}
                     onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Connexion</Text>
+                    <Text style={components.buttonTitle}>Connexion</Text>
                 </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Pas encore de compte ? <Text onPress={onFooterLinkPress} style={styles.footerLink}>S'inscrire</Text></Text>
+                <View style={components.footerView}>
+                    <Text style={components.text}>Pas encore de compte ? <Text onPress={onFooterLinkPress} style={components.link}>S'inscrire</Text></Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>
@@ -77,23 +77,6 @@ export default function LoginScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        display: "flex",
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.bgColor,
-    },
-    title: {
-
-    },
-    logo: {
-        flex: 1,
-        height: 120,
-        width: 90,
-        alignSelf: "center",
-        margin: 30
-    },
     topInput: {
         height: 48,
         borderRadius: 5,
@@ -105,45 +88,4 @@ const styles = StyleSheet.create({
         marginRight: 30,
         paddingLeft: 16
     },
-    input: {
-        height: 48,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingLeft: 16
-    },
-    button: {
-        backgroundColor: colors.mainColor,
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        height: 48,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold"
-    },
-    footerView: {
-        flex: 1,
-        alignItems: "center",
-        marginTop: 20
-    },
-    footerText: {
-        fontSize: 16,
-        // color: '#2e2e2d',
-        color: '#ffffff',
-    },
-    footerLink: {
-        color: colors.mainColor,
-        fontWeight: "bold",
-        fontSize: 16
-    }
 });
