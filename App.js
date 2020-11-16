@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegistrationScreen } from './pages'
+import { LoginScreen, HomeScreen, RegistrationScreen, AddDataScreen } from './pages'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { firebase } from './firebaseConfig';
 import {decode, encode} from 'base-64'
@@ -43,30 +43,42 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: colors.bgColor,
-            shadowOpacity: 0,
-            elevation: 0
-          },
-          headerTintColor: colors.tertiaryColor,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      >
-        { user ? (
-          <Stack.Screen name="Home" options={{ title: "" }}>
-            {props => <HomeScreen name="Home" {...props} extraData={user} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
-          </>
-        )}
-      </Stack.Navigator>
+      {user ? (
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: colors.bgColor,
+              shadowOpacity: 0,
+              elevation: 0
+            },
+            headerTintColor: colors.mainColor,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
+          <Stack.Screen name="HomeScreen" component={HomeScreen} extraData={user} options={{ title: "Accueil" }} />
+          <Stack.Screen name="AddData" component={AddDataScreen} extraData={user} options={{ title: "Ajouter des données" }} />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: colors.bgColor,
+              shadowOpacity: 0,
+              elevation: 0
+            },
+            headerTintColor: colors.tertiaryColor,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
+          <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
+        </Stack.Navigator>
+      )
+      }
     </NavigationContainer>
   );
 }

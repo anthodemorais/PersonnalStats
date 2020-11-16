@@ -3,6 +3,7 @@ import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-nativ
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../firebaseConfig';
 import components from '../styles/components'
+import colors from '../styles/colors';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')
@@ -24,7 +25,7 @@ export default function LoginScreen({navigation}) {
                     return;
                 }
                 const user = firestoreDocument.data()
-                navigation.navigate('Home', {user})
+                navigation.navigate('HomeScreen', {user})
             })
             .catch(error => {
                 alert(error)
@@ -78,14 +79,17 @@ export default function LoginScreen({navigation}) {
 
 const styles = StyleSheet.create({
     topInput: {
+        width: '80%',
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'white',
         marginTop: '30%',
         marginBottom: 10,
         marginLeft: 30,
         marginRight: 30,
-        paddingLeft: 16
+        paddingLeft: 16,
+        alignSelf: 'center',
+        borderRadius: 50,
+        backgroundColor: colors.secondaryColor,
     },
 });
