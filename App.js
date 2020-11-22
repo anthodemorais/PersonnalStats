@@ -13,54 +13,36 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
+  // const [loading, setLoading] = useState(true)
+  // const [user, setUser] = useState(null)
 
-  const usersRef = firebase.firestore().collection('users');
-  firebase.auth().onAuthStateChanged(u => {
-    if (u) {
-      usersRef.doc(u.uid).get()
-      .then((document) => {
-        const userData = document.data()
-        setLoading(false)
-        setUser(userData)
-      })
-      .catch((error) => {
-        setLoading(false)
-      });
-    } else {
-      setLoading(false)
-    }
-  });
+  // const usersRef = firebase.firestore().collection('users');
+  // firebase.auth().onAuthStateChanged(u => {
+  //   if (u) {
+  //     usersRef.doc(u.uid).get()
+  //     .then((document) => {
+  //       const userData = document.data()
+  //       setLoading(false)
+  //       setUser(userData)
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false)
+  //     });
+  //   } else {
+  //     setLoading(false)
+  //   }
+  // });
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator></ActivityIndicator>
-      </View>
-    )	
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <ActivityIndicator></ActivityIndicator>
+  //     </View>
+  //   )	
+  // }
 
   return (
     <NavigationContainer>
-      {user ? (
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: colors.bgColor,
-              shadowOpacity: 0,
-              elevation: 0
-            },
-            headerTintColor: colors.mainColor,
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        >
-          <Stack.Screen name="HomeScreen" component={HomeScreen} extraData={user} options={{ title: "Accueil" }} />
-          <Stack.Screen name="AddData" component={AddDataScreen} extraData={user} options={{ title: "Ajouter des données" }} />
-        </Stack.Navigator>
-      ) : (
         <Stack.Navigator
           screenOptions={{
             headerStyle: {
@@ -76,22 +58,22 @@ export default function App() {
         >
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
           <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil" }} />
+          <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter des données" }} />
         </Stack.Navigator>
-      )
-      }
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.bgColor,
-    height: '100%'
-  }
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     backgroundColor: colors.bgColor,
+//     height: '100%'
+//   }
+// })
 // main color = 224 118 45
 // secondary = white
 // bg = rgb(237, 163, 97)

@@ -2,10 +2,10 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import components from '../styles/components'
 
-export default function HomeScreen(props) {
+export default function HomeScreen({ navigation, route }) {
 
     const onAddDataPress = () => {
-        props.navigation.navigate("AddData")
+        navigation.navigate("AddData", {id: route.params.user.id})
     }
 
     const onSeeDataPress = () => {
