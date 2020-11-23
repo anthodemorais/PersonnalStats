@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { firebase } from '../firebaseConfig';
 import { StyleSheet } from 'react-native';
@@ -11,6 +11,7 @@ export default function RegistrationScreen({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
@@ -21,6 +22,8 @@ export default function RegistrationScreen({navigation}) {
             alert("Passwords don't match.")
             return
         }
+
+        setLoading(true)
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((response) => {
             const uid = response.user.uid
@@ -32,13 +35,16 @@ export default function RegistrationScreen({navigation}) {
             const usersRef = firebase.firestore().collection('users')
             usersRef.doc(uid).set(data)
             .then(() => {
+                setLoading(false)
                 navigation.navigate('Home', {user: data})
             })
             .catch((error) => {
+                setLoading(false)
                 alert(error)
             });
         })
         .catch((error) => {
+            setLoading(false)
             alert(error)
         });
     }
@@ -91,6 +97,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
+                    disabled={loading}
                     style={components.button}
                     onPress={() => onRegisterPress()}>
                     <Text style={components.buttonTitle}>Inscription</Text>
@@ -98,6 +105,7 @@ export default function RegistrationScreen({navigation}) {
                 <View style={components.footerView}>
                     <Text style={components.text}>Déjà inscrit ? <Text onPress={onFooterLinkPress} style={components.link}>Connexion</Text></Text>
                 </View>
+                <ActivityIndicator animating={loading}></ActivityIndicator>
             </KeyboardAwareScrollView>
         </View>
     )

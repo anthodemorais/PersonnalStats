@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegistrationScreen, AddDataScreen } from './pages'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { LoginScreen, HomeScreen, RegistrationScreen, AddDataScreen, SeeDataScreen, SeeProgressionScreen } from './pages'
 import { firebase } from './firebaseConfig';
 import {decode, encode} from 'base-64'
 import colors from './styles/colors'
@@ -60,6 +59,8 @@ export default function App() {
           <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
           <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil", headerLeft: null }} />
           <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter des données" }} />
+          <Stack.Screen name="SeeData" component={SeeDataScreen} options={{ title: " " }} />
+          <Stack.Screen name="SeeProgression" component={SeeProgressionScreen} options={{ title: "Voir ma progression" }} />
         </Stack.Navigator>
     </NavigationContainer>
   );

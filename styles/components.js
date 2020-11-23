@@ -47,6 +47,10 @@ export default {
         alignItems: "center",
         marginTop: 20
     },
+    listText: {
+        fontSize: 22,
+        color: colors.mainColor,
+    },
     text: {
         fontSize: 16,
         color: colors.mainColor,

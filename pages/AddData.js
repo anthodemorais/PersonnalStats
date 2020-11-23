@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Keyboard, Platform } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Keyboard, Platform, ActivityIndicator } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import components from '../styles/components'
 import { firebase } from '../firebaseConfig';
@@ -11,6 +11,7 @@ export default function AddDataScreen({ navigation, route }) {
     const [x, setX] = useState('')
     const [y, setY] = useState('')
     const [date, setDate] = useState(new Date())
+    const [loading, setLoading] = useState(false)
 
     const onDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -18,12 +19,20 @@ export default function AddDataScreen({ navigation, route }) {
     }
 
     const addData = () => {
+        setLoading(true)
         const ref = firebase.firestore().collection('stats')
         ref.doc(route.params.id).get()
         .then((snapshot) => {
             if (snapshot.exists) {
                 let object = snapshot.data()
-                object[name].push({ x, y, date })
+
+                if (!(name in object)) {
+                    object[name] = [{ x, y, date }]
+                }
+                else {
+                    object[name].push({ x, y, date })
+                }
+
                 ref.doc(route.params.id).set(object)
                 .then(_doc => {
                     alert("Vos données ont été ajoutées")
@@ -32,6 +41,10 @@ export default function AddDataScreen({ navigation, route }) {
                 })
                 .catch((error) => {
                     console.log(error)
+                    alert('Il y a eu une erreur')
+                    Keyboard.dismiss()
+                    navigation.navigate("Home")
+                    setLoading(false)
                 });
             }
             else {
@@ -45,15 +58,21 @@ export default function AddDataScreen({ navigation, route }) {
                 })
                 .catch((error) => {
                     console.log(error)
+                    setLoading(false)
+                    alert('Il y a eu une erreur')
+                    Keyboard.dismiss()
+                    navigation.navigate("Home")
                 });
             }
         })
         .catch((error) => {
             console.log(error)
+            setLoading(false)
+            alert('Il y a eu une erreur')
+            Keyboard.dismiss()
+            navigation.navigate("Home")
         });
     }
-
-    // user = props.extraData
 
     return (
         <View style={components.container}>
@@ -70,6 +89,7 @@ export default function AddDataScreen({ navigation, route }) {
                     underlineColorAndroid="transparent"
                 />
                 <TextInput
+                    keyboardType="number-pad"
                     style={components.input}
                     placeholder='Répétitions'
                     placeholderTextColor="#aaaaaa"
@@ -80,7 +100,8 @@ export default function AddDataScreen({ navigation, route }) {
                 />
                 <TextInput
                     style={components.input}
-                    placeholder='Poids'
+                    keyboardType="number-pad"
+                    placeholder='Poids en kg'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setX(text)}
                     value={x}
@@ -89,10 +110,12 @@ export default function AddDataScreen({ navigation, route }) {
                 />
                 <DateTimePicker value={date} mode="date" onChange={onDateChange} />
                 <TouchableOpacity
+                    disabled={loading}
                     style={components.button}
                     onPress={() => addData()}>
                     <Text style={components.buttonTitle}>Ajouter</Text>
                 </TouchableOpacity>
+                <ActivityIndicator animating={loading}></ActivityIndicator>
             </KeyboardAwareScrollView>
         </View>
     )

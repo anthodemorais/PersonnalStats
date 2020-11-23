@@ -9,6 +9,7 @@ export default function HomeScreen({ navigation, route }) {
     }
 
     const onSeeDataPress = () => {
+        navigation.navigate("SeeData", {id: route.params.user.id})
     }
 
     // user = props.extraData
