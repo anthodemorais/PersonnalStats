@@ -50,7 +50,7 @@ export default function App() {
               shadowOpacity: 0,
               elevation: 0
             },
-            headerTintColor: colors.tertiaryColor,
+            headerTintColor: colors.mainColor,
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -58,7 +58,7 @@ export default function App() {
         >
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
           <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil" }} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil", headerLeft: null }} />
           <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter des données" }} />
         </Stack.Navigator>
     </NavigationContainer>
