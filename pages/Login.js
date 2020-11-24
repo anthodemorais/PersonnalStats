@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View, StyleSheet, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { storeInAsyncStorage } from '../helpers'
 import { firebase } from '../firebaseConfig';
 import components from '../styles/components'
 import colors from '../styles/colors';
@@ -14,6 +15,7 @@ export default function LoginScreen({navigation}) {
         navigation.navigate('Registration')
     }
 
+    console.log()
     const onLoginPress = () => {
         setLoading(true)
         firebase.auth().signInWithEmailAndPassword(email, password)
@@ -29,7 +31,13 @@ export default function LoginScreen({navigation}) {
                 }
                 setLoading(false)
                 const user = firestoreDocument.data()
-                navigation.navigate('Home', {user})
+                storeInAsyncStorage('@id', user.id).then(() => {
+                    navigation.navigate('Home')
+                })
+                .catch((error) => {
+                    setLoading(false)
+                    alert(error)
+                })
             })
             .catch(error => {
                 setLoading(false)

@@ -1,42 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, TouchableOpacity, FlatList, StyleSheet} from 'react-native'
+import { getFromAsyncStorage } from '../helpers'
 import components from '../styles/components'
 import { firebase } from '../firebaseConfig';
 import colors from '../styles/colors';
 
-export default function SeeDataScreen({ navigation, route }) {
+export default function SeeDataScreen({ navigation }) {
     const [data, setData] = useState({})
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
 
-    const ref = firebase.firestore().collection('stats')
-    ref.doc(route.params.id).get()
-    .then((snapshot) => {
-        if (snapshot.exists) {
-            let object = snapshot.data()
-            setData(object)
-
-            let allNames = []
-            let allValues = []
-            for (const name in object) {
-                allNames.push({key: name})
-                allValues.push(object[name])
-            }
-            setNames(allNames)
-            setValues(allValues)
-        }
-        else {
-            alert("Vous n'avez rien ajouté pour le moment...")
-        }
-    })
-    .catch((error) => {
-        console.log(error)
-    });
+    useEffect(() => {
+        getFromAsyncStorage('@id')
+        .then((userId) => {
+            const ref = firebase.firestore().collection('stats')
+            ref.doc(userId).get()
+            .then((snapshot) => {
+                if (snapshot.exists) {
+                    let object = snapshot.data()
+                    setData(object)
+        
+                    let allNames = []
+                    let allValues = []
+                    for (const name in object) {
+                        allNames.push({key: name})
+                        allValues.push(object[name])
+                    }
+                    setNames(allNames)
+                    setValues(allValues)
+                }
+                else {
+                    alert("Vous n'avez rien ajouté pour le moment...")
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        })
+    }, [])
 
     const seeProgression = (key) => {
         navigation.navigate("SeeProgression", {perfs: "aaa"})
     }
-
+    
     return (
         <View style={components.container}>
             <Text style={styles.subtitle}>Clique sur un exercice pour voir ta progression</Text>

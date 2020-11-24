@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { storeInAsyncStorage } from '../helpers'
 import { firebase } from '../firebaseConfig';
 import { StyleSheet } from 'react-native';
 import components from '../styles/components';
@@ -36,7 +37,13 @@ export default function RegistrationScreen({navigation}) {
             usersRef.doc(uid).set(data)
             .then(() => {
                 setLoading(false)
-                navigation.navigate('Home', {user: data})
+                storeInAsyncStorage('@id', data.id).then(() => {
+                    navigation.navigate('Home')
+                })
+                .catch((error) => {
+                    setLoading(false)
+                    alert(error)
+                })
             })
             .catch((error) => {
                 setLoading(false)
