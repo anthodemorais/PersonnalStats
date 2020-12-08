@@ -4,7 +4,6 @@ import { LineChart, BarChart } from "react-native-chart-kit";
 import RNPickerSelect from 'react-native-picker-select';
 import colors from '../styles/colors';
 import { timestampToDate } from '../helpers';
-import { createNativeWrapper } from 'react-native-gesture-handler';
 
 export default function SeeDataScreen({ navigation, route }) {
     const [dataset, setDataset] = useState({})
@@ -12,6 +11,7 @@ export default function SeeDataScreen({ navigation, route }) {
     const [selectedWeight, setSelectedWeight] = useState('')
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
+    const [chartType, setChartType] = useState(1)
 
     const updateChart = (ds, weight) => {
         setLoading(true)
@@ -69,7 +69,6 @@ export default function SeeDataScreen({ navigation, route }) {
             }
         });
 
-        console.log(w)
         if (w.length === 0) {
             alert('Pas assez de données pour créer un graphique')
             navigation.pop()
@@ -102,13 +101,25 @@ export default function SeeDataScreen({ navigation, route }) {
             {loading
             ? <ActivityIndicator/>
             : <View>
-                <RNPickerSelect
-                    onValueChange={(value) => updateChart(dataset, value)}
-                    items={weights.map(w => { return {'label': w.toString() + "Kg", 'value': w} })}
-                    value={selectedWeight}
-                    style={pickerStyle}
-                />
-                <LineChart
+                <View style={{ display: "flex", justifyContent: "center", alignSelf: 'center' }}>
+                    <RNPickerSelect
+                        onValueChange={(value) => updateChart(dataset, value)}
+                        items={weights.map(w => { return {'label': w.toString() + "Kg", 'value': w} })}
+                        value={selectedWeight}
+                        style={pickerStyle}
+                    />
+                    <RNPickerSelect
+                        onValueChange={(value) => setChartType(value)}
+                        items={[
+                            {'label': "Courbe", 'value': 1},
+                            {'label': "Histogramme", 'value': 2},
+                        ]}
+                        value={chartType}
+                        style={pickerStyle}
+                    />
+                </View>
+                {chartType === 1
+                ? <LineChart
                     data={data}
                     width={Dimensions.get('window').width}
                     height={300}
@@ -116,6 +127,15 @@ export default function SeeDataScreen({ navigation, route }) {
                     chartConfig={chartConfig}
                     bezier
                 />
+                : <BarChart
+                    // style={graphStyle}
+                    data={data}
+                    width={Dimensions.get('window').width}
+                    height={300}
+                    yAxisLabel=""
+                    chartConfig={chartConfig}
+                    verticalLabelRotation={30}
+                />}
             </View>}
         </View>
     )
