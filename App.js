@@ -60,7 +60,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil", headerLeft: null }} />
           <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter des données" }} />
           <Stack.Screen name="SeeData" component={SeeDataScreen} options={{ title: " " }} />
-          <Stack.Screen name="SeeProgression" component={SeeProgressionScreen} options={{ title: "Voir ma progression" }} />
+          <Stack.Screen name="SeeProgression" component={SeeProgressionScreen} options={({ route }) => ({ title: route.params.name })} />
         </Stack.Navigator>
     </NavigationContainer>
   );

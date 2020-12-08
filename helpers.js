@@ -19,4 +19,9 @@ const getFromAsyncStorage = async (key) => {
     }
 }
 
-export { storeInAsyncStorage, getFromAsyncStorage }
+const timestampToDate = (ts) => {
+    let date = new Date(ts * 1000)
+    return date.toLocaleDateString()
+}
+
+export { storeInAsyncStorage, getFromAsyncStorage, timestampToDate }

@@ -6,7 +6,6 @@ import { firebase } from '../firebaseConfig';
 import colors from '../styles/colors';
 
 export default function SeeDataScreen({ navigation }) {
-    const [data, setData] = useState({})
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
 
@@ -18,7 +17,6 @@ export default function SeeDataScreen({ navigation }) {
             .then((snapshot) => {
                 if (snapshot.exists) {
                     let object = snapshot.data()
-                    setData(object)
         
                     let allNames = []
                     let allValues = []
@@ -39,8 +37,8 @@ export default function SeeDataScreen({ navigation }) {
         })
     }, [])
 
-    const seeProgression = (key) => {
-        navigation.navigate("SeeProgression", {perfs: "aaa"})
+    const seeProgression = (index, name) => {
+        navigation.navigate("SeeProgression", { name: name, perfs: values[index] })
     }
     
     return (
@@ -48,8 +46,8 @@ export default function SeeDataScreen({ navigation }) {
             <Text style={styles.subtitle}>Clique sur un exercice pour voir ta progression</Text>
             <FlatList
                 data={names}
-                renderItem={({item}) => {
-                    return <Text style={styles.link} onPress={() => seeProgression(item.key)}>{item.key}</Text>
+                renderItem={({item, index}) => {
+                    return <Text style={styles.link} onPress={() => seeProgression(index, item.key)}>{item.key}</Text>
                 }}
             />
         </View>
