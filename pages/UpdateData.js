@@ -7,19 +7,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { getFromAsyncStorage } from '../helpers'
 import colors from '../styles/colors'
 
-export default function AddDataScreen({ navigation }) {
-    const [name, setName] = useState('')
-    const [x, setX] = useState('')
-    const [y, setY] = useState('')
-    const [date, setDate] = useState(new Date())
+export default function UpdateDataScreen({ navigation, route }) {
+    const [name, setName] = useState(route.params.exo)
+    const [x, setX] = useState(route.params.x)
+    const [y, setY] = useState(route.params.y)
+    const [date, setDate] = useState(route.params.date)
     const [loading, setLoading] = useState(false)
 
-    const onDateChange = (event, selectedDate) => {
+    const onDateChange = (_, selectedDate) => {
         const currentDate = selectedDate || date;
         setDate(currentDate)
     }
 
-    const addData = () => {
+    const updateData = () => {
         setLoading(true)
         getFromAsyncStorage('@id')
         .then((userId) => {
@@ -28,54 +28,46 @@ export default function AddDataScreen({ navigation }) {
             .then((snapshot) => {
                 if (snapshot.exists) {
                     let object = snapshot.data()
-    
-                    if (!(name in object)) {
-                        object[name] = [{ x, y, date }]
+
+                    if (name in object) {
+                        object[name][route.params.index] = { x, y, date }
                     }
                     else {
-                        object[name].push({ x, y, date })
+                        alert('Cet exercice n\'existe pas')
+                        Keyboard.dismiss()
+                        navigation.navigate('Home')
+                        setLoading(false)
                     }
-    
+
                     ref.doc(userId).set(object)
                     .then(_doc => {
-                        alert("Vos données ont été ajoutées")
+                        alert("Vos données ont été mises à jour")
                         Keyboard.dismiss()
-                        navigation.navigate("Home")
+                        navigation.navigate('Home')
                     })
                     .catch((error) => {
                         console.log(error)
-                        alert('Impossible d\'ajouter vos données. Rééssayez plus tard...')
+                        alert('Impossible de mettre à jour vos données. Rééssayez plus tard...')
                         Keyboard.dismiss()
-                        navigation.navigate("Home")
+                        navigation.navigate('Home')
                         setLoading(false)
                     });
                 }
                 else {
-                    let object = {}
-                    object[name] = [{ x, y, date }]
-                    ref.doc(userId).set(object)
-                    .then(_doc => {
-                        alert("Vos données ont été ajoutées")
-                        Keyboard.dismiss()
-                        navigation.navigate("Home")
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        setLoading(false)
-                        alert('Impossible d\'ajouter vos données. Rééssayez plus tard...')
-                        Keyboard.dismiss()
-                        navigation.navigate("Home")
-                    });
+                    alert('Cet exercice n\'existe pas')
+                    Keyboard.dismiss()
+                    navigation.navigate('Home')
+                    setLoading(false)
                 }
-            })
-            .catch((error) => {
-                console.log(error)
-                setLoading(false)
-                alert('Il y a eu une erreur')
-                Keyboard.dismiss()
-                navigation.navigate("Home")
             });
         })
+        .catch((error) => {
+            console.log(error)
+            alert('Impossible de mettre à jour vos données. Rééssayez plus tard...')
+            Keyboard.dismiss()
+            navigation.pop()
+            setLoading(false)
+        });
     }
 
     return (
@@ -91,6 +83,8 @@ export default function AddDataScreen({ navigation }) {
                     onChangeText={(text) => setName(text)}
                     value={name}
                     underlineColorAndroid="transparent"
+                    editable={false}
+                    selectTextOnFocus={false}
                 />
                 <TextInput
                     keyboardType="number-pad"
@@ -116,8 +110,8 @@ export default function AddDataScreen({ navigation }) {
                 <TouchableOpacity
                     disabled={loading}
                     style={components.button}
-                    onPress={() => addData()}>
-                    <Text style={components.buttonTitle}>Ajouter</Text>
+                    onPress={() => updateData()}>
+                    <Text style={components.buttonTitle}>Modifier</Text>
                 </TouchableOpacity>
                 <ActivityIndicator animating={loading}></ActivityIndicator>
             </KeyboardAwareScrollView>

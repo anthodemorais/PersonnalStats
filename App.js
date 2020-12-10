@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegistrationScreen, AddDataScreen, SeeDataScreen, SeeProgressionScreen } from './pages'
-import { firebase } from './firebaseConfig';
+import { LoginScreen, HomeScreen, RegistrationScreen, AddDataScreen, SeeDataScreen, SeeProgressionScreen, HistoryScreen, UpdateDataScreen } from './pages'
 import {decode, encode} from 'base-64'
 import colors from './styles/colors'
 if (!global.btoa) {  global.btoa = encode }
@@ -58,8 +57,10 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} options={{ title: "Connexion" }} />
           <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: "Inscription" }} />
           <Stack.Screen name="Home" component={HomeScreen} options={{ title: "Accueil", headerLeft: null }} />
-          <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter des données" }} />
+          <Stack.Screen name="AddData" component={AddDataScreen} options={{ title: "Ajouter" }} />
           <Stack.Screen name="SeeData" component={SeeDataScreen} options={{ title: " " }} />
+          <Stack.Screen name="History" component={HistoryScreen} options={{ title: "Historique" }} />
+          <Stack.Screen name="UpdateData" component={UpdateDataScreen} options={{ title: "Modifier" }} />
           <Stack.Screen name="SeeProgression" component={SeeProgressionScreen} options={({ route }) => ({ title: route.params.name })} />
         </Stack.Navigator>
     </NavigationContainer>

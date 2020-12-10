@@ -12,7 +12,9 @@ export default function HomeScreen({ navigation }) {
         navigation.navigate("SeeData")
     }
 
-    // user = props.extraData
+    const onHistoryPress = () => {
+        navigation.navigate("History")
+    }
 
     return (
         <View style={components.container}>
@@ -25,6 +27,11 @@ export default function HomeScreen({ navigation }) {
                 style={components.button}
                 onPress={() => onAddDataPress()}>
                 <Text style={components.buttonTitle}>Ajouter des données</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={components.button}
+                onPress={() => onHistoryPress()}>
+                <Text style={components.buttonTitle}>Historique des ajouts</Text>
             </TouchableOpacity>
         </View>
     )
